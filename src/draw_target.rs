@@ -1087,6 +1087,11 @@ impl<Backing : AsRef<[u32]> + AsMut<[u32]>> DrawTarget<Backing> {
     /// Saves the current pixel to a png file at `path`
     #[cfg(feature = "png")]
     pub fn write_png<P: AsRef<std::path::Path>>(&self, path: P) -> Result<(), png::EncodingError> {
+        writer.write_image_data(&self.encode_png())
+    }
+    
+    #[cfg(feature = "png")]
+    pub fn encode_png(&self) -> Result(Vec<u8>, png::EncodingError> {
         let file = File::create(path)?;
 
         let w = &mut BufWriter::new(file);
@@ -1115,7 +1120,7 @@ impl<Backing : AsRef<[u32]> + AsMut<[u32]>> DrawTarget<Backing> {
             output.push(b as u8);
             output.push(a as u8);
         }
-
-        writer.write_image_data(&output)
+        
+        Ok(output)
     }
 }
